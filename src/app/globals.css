@@ -224,42 +224,7 @@ input, select, textarea {
   font-size: inherit;
 }
 
-/* ── Custom Cursor (Desktop Only) ─────────────────────────────── */
-@media (hover: hover) and (pointer: fine) {
-  .custom-cursor {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: var(--text-primary);
-    position: fixed;
-    pointer-events: none;
-    z-index: var(--z-cursor);
-    transform: translate(-50%, -50%);
-    transition: width 0.2s ease, height 0.2s ease, background 0.2s ease, border 0.2s ease;
-    mix-blend-mode: difference;
-  }
 
-  .custom-cursor.hovering {
-    width: 40px;
-    height: 40px;
-    background: transparent;
-    border: 2px solid var(--accent-gold);
-    mix-blend-mode: normal;
-  }
-
-  .cursor-active body {
-    cursor: none;
-  }
-
-  .cursor-active a,
-  .cursor-active button,
-  .cursor-active input,
-  .cursor-active select,
-  .cursor-active textarea,
-  .cursor-active [role="button"] {
-    cursor: none;
-  }
-}
 
 /* ── Utility Classes ──────────────────────────────────────────── */
 .container {
@@ -369,13 +334,20 @@ input, select, textarea {
   height: var(--nav-height);
   display: flex;
   align-items: center;
-  transition: height var(--transition-base), border-color var(--transition-base), background var(--transition-base);
+  transition: all 0.3s ease;
   border-bottom: 1px solid transparent;
+  max-width: 100%;
+  margin: 0 auto;
 }
 
 .navbar.scrolled {
   height: var(--nav-height-scrolled);
-  border-bottom-color: var(--border-light);
+  top: 16px;
+  max-width: 1200px;
+  border-radius: 20px;
+  background: var(--bg-primary);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--border-light);
 }
 
 .navbar-inner {
@@ -1293,11 +1265,20 @@ input, select, textarea {
   gap: var(--space-md);
 }
 
-.testimonial-author .placeholder-image {
-  width: 48px;
-  height: 48px;
+.testimonial-avatar {
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
+  background: var(--bg-dark);
+  color: var(--accent-gold);
+  font-family: var(--font-serif);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
+  border: 1px solid var(--accent-gold);
 }
 
 .testimonial-author-name {
@@ -2028,6 +2009,164 @@ input, select, textarea {
   color: #B0B0B0;
   text-align: center;
   line-height: 1.3;
+}
+
+/* ── Asymmetric Bento Gallery ──────────────────────────────── */
+.bento-section {
+  padding: var(--space-section) 0;
+  background-color: var(--bg-primary); /* Changed to white/light background */
+  color: var(--text-primary);
+  overflow: hidden;
+}
+
+.bento-section .showcase-header {
+  text-align: center;
+  margin-bottom: var(--space-3xl);
+}
+
+.bento-section .section-label {
+  color: var(--accent-gold);
+}
+
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.bento-tile {
+  position: relative;
+  border-radius: 20px;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  height: 380px;
+}
+
+.bento-tile.featured {
+  grid-column: span 2;
+  grid-row: span 2;
+  height: calc(760px + 24px); /* 2 rows + 1 gap */
+}
+
+.bento-tile-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: var(--bg-white);
+  border: 1px solid var(--border-light); /* Premium border */
+  transform-style: preserve-3d;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease, border-color 0.4s ease;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+  transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1);
+  will-change: transform;
+}
+
+.bento-tile:hover .bento-tile-inner {
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+  border-color: var(--accent-gold-light); /* Premium hover border */
+}
+
+.bento-tile-image-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: scale(1.02);
+}
+
+.bento-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--placeholder-bg);
+  border-radius: 20px;
+}
+
+.bento-placeholder-icon {
+  width: 40px;
+  height: 40px;
+  color: var(--border-hairline);
+}
+
+.bento-tile-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60%;
+  background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+  pointer-events: none;
+  border-radius: 0 0 20px 20px;
+  z-index: 1;
+}
+
+.bento-tile-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 32px;
+  z-index: 2;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: translateZ(0px) translateY(0px);
+}
+
+.bento-tile-title {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.2;
+}
+
+@media (pointer: coarse) {
+  .bento-tile-inner,
+  .bento-tile-image-wrapper,
+  .bento-tile-content {
+    transition: none !important;
+  }
+}
+
+/* Responsive Constraints for Bento Gallery */
+@media (max-width: 1024px) {
+  .bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .bento-tile {
+    height: 320px;
+  }
+  .bento-tile.featured {
+    grid-row: span 1;
+    height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .bento-grid {
+    grid-template-columns: 1fr;
+  }
+  .bento-tile {
+    height: 280px;
+  }
+  .bento-tile.featured {
+    grid-column: span 1;
+    height: 320px;
+  }
+  .bento-tile-content {
+    padding: 24px;
+  }
+  .bento-tile-title {
+    font-size: var(--text-xl);
+  }
 }
 
 /* ── Responsive Utilities ─────────────────────────────────────── */

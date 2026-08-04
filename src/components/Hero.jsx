@@ -1,8 +1,7 @@
 import PlaceholderImage from './PlaceholderImage';
 
 /**
- * Hero — Large serif headline, benefit-driven sub-headline, dual CTAs,
- * and a client logo trust strip.
+ * Hero — Large serif headline, benefit-driven sub-headline, and dual CTAs.
  */
 export default function Hero() {
   return (
@@ -24,18 +23,6 @@ export default function Hero() {
           <div className="hero-ctas">
             <a href="#contact" className="btn-primary">Start Your Project</a>
             <a href="#portfolio" className="btn-secondary">View Our Work</a>
-          </div>
-
-          <div className="hero-trust">
-            <p className="hero-trust-label">Trusted by growing brands</p>
-            <div className="hero-logos">
-              {/* TODO: Replace with real client logos — see /assets/clients/ */}
-              <PlaceholderImage label="Client logo" dimensions="200×80" />
-              <PlaceholderImage label="Client logo" dimensions="200×80" />
-              <PlaceholderImage label="Client logo" dimensions="200×80" />
-              <PlaceholderImage label="Client logo" dimensions="200×80" />
-              <PlaceholderImage label="Client logo" dimensions="200×80" />
-            </div>
           </div>
         </div>
       </div>

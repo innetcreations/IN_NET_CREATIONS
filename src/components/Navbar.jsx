@@ -34,7 +34,6 @@ export default function Navbar() {
     { label: 'Work', href: '#portfolio' },
     { label: 'Process', href: '#process' },
     { label: 'About', href: '#about' },
-    { label: 'Testimonials', href: '#testimonials' },
     { label: 'Contact', href: '#contact' },
   ];
 
@@ -117,24 +116,22 @@ export default function Navbar() {
 }
 
 /**
- * LogoWithFallback — Tries to render the logo image; if it fails,
- * falls back to a tracked-out typographic wordmark.
+ * LogoWithFallback — Renders a placeholder logo next to the typographic wordmark.
  */
 function LogoWithFallback() {
-  const [imgError, setImgError] = useState(false);
-
-  if (imgError) {
-    return <span className="navbar-logo-text">IN NET CREATIONS</span>;
-  }
-
   return (
-    <>
-      <img
-        src="/assets/logo/in-net-creations-logo.png"
-        alt="IN NET CREATIONS"
-        onError={() => setImgError(true)}
-        style={{ height: 36, width: 'auto', objectFit: 'contain' }}
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <div 
+        style={{ 
+          width: '28px', 
+          height: '28px', 
+          backgroundColor: 'var(--placeholder-bg)',
+          border: '1px dashed var(--placeholder-border)',
+          borderRadius: '4px'
+        }} 
+        aria-hidden="true"
       />
-    </>
+      <span className="navbar-logo-text">IN NET CREATIONS</span>
+    </div>
   );
 }
