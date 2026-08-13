@@ -1,11 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import PlaceholderImage from './PlaceholderImage';
+import { projectsData } from '../data/projects';
+import ProjectImage from './ProjectImage';
 
 /**
- * Portfolio — Filterable project grid with 6 project cards.
- * Filter tabs: All / Web / App / Branding / Social
+ * Portfolio — Filterable project grid with 8 real project cards.
+ * Filter tabs: All / Web / App / Branding
  */
 export default function Portfolio() {
   const [activeFilter, setActiveFilter] = useState('all');
@@ -15,46 +16,11 @@ export default function Portfolio() {
     { key: 'web', label: 'Web' },
     { key: 'app', label: 'App' },
     { key: 'branding', label: 'Branding' },
-    { key: 'social', label: 'Social' },
-  ];
-
-  // TODO: Replace with real portfolio projects
-  const projects = [
-    {
-      title: 'E-Commerce Platform Redesign',
-      category: 'web',
-      tag: 'Website',
-    },
-    {
-      title: 'Fitness Tracking Mobile App',
-      category: 'app',
-      tag: 'Application',
-    },
-    {
-      title: 'Artisan Bakery Brand Identity',
-      category: 'branding',
-      tag: 'Branding',
-    },
-    {
-      title: 'Restaurant Social Media Campaign',
-      category: 'social',
-      tag: 'Social Media',
-    },
-    {
-      title: 'Real Estate Listing Portal',
-      category: 'web',
-      tag: 'Website',
-    },
-    {
-      title: 'Health & Wellness App',
-      category: 'app',
-      tag: 'Application',
-    },
   ];
 
   const filteredProjects = activeFilter === 'all'
-    ? projects
-    : projects.filter((p) => p.category === activeFilter);
+    ? projectsData
+    : projectsData.filter((p) => p.category === activeFilter);
 
   return (
     <section className="portfolio" id="portfolio">
@@ -79,21 +45,27 @@ export default function Portfolio() {
           {filteredProjects.map((project, i) => (
             <div
               className={`portfolio-card reveal reveal-delay-${(i % 3) + 1}`}
-              key={`${project.category}-${i}`}
+              key={project.id || `${project.category}-${i}`}
             >
               <div className="portfolio-card-image">
-                {/* TODO: Replace with real project screenshot — see /assets/portfolio/ */}
-                <PlaceholderImage label="Project screenshot" dimensions="1600×1000" />
+                <ProjectImage
+                  src={project.image}
+                  alt={project.name}
+                  title={project.name}
+                  dimensions="1600×1000"
+                />
               </div>
               <div className="portfolio-card-body">
                 <span className="portfolio-card-tag">{project.tag}</span>
-                <h3 className="portfolio-card-title">{project.title}</h3>
+                <h3 className="portfolio-card-title">{project.name} — {project.title}</h3>
+                <p className="portfolio-card-desc">{project.description}</p>
                 <a
-                  href="#"
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="portfolio-card-link"
                   data-portfolio-link
                 >
-                  {/* TODO: Insert live project URL */}
                   View project <span aria-hidden="true">→</span>
                 </a>
               </div>
@@ -104,3 +76,4 @@ export default function Portfolio() {
     </section>
   );
 }
+

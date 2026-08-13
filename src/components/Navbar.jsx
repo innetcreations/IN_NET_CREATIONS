@@ -1,23 +1,26 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 
 /**
- * Navbar — Sticky navigation with scroll-shrink effect, mobile overlay menu,
- * contrast toggle, and typographic logo fallback.
+ * Navbar — Sticky navigation with scroll-shrink, mobile overlay, theme toggle.
+ * Logo: /assets/T_logo.png served from /public/assets/.
+ * Smart routing: smooth-scroll anchors on homepage, route links on sub-pages.
  */
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
+  const [scrolled, setScrolled]   = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark]         = useState(false);
+  const [logoError, setLogoError]   = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Prevent body scroll when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
@@ -29,46 +32,69 @@ export default function Navbar() {
     document.documentElement.setAttribute('data-theme', next ? 'dark' : 'light');
   };
 
+  const isHome = pathname === '/';
+
   const navLinks = [
-    { label: 'Services', href: '#services' },
-    { label: 'Work', href: '#portfolio' },
-    { label: 'Process', href: '#process' },
-    { label: 'About', href: '#about' },
-    { label: 'Contact', href: '#contact' },
+    { label: 'Services', anchor: '#services', route: '/services' },
+    { label: 'Work',     anchor: '#portfolio', route: '/work'     },
+    { label: 'Process',  anchor: '#process',   route: '/process'  },
+    { label: 'About',    anchor: '#about',     route: '/about'    },
+    { label: 'Contact',  anchor: '#contact',   route: '/contact'  },
   ];
 
-  const handleNavClick = (e, href) => {
-    e.preventDefault();
+  const handleAnchorClick = (e, anchor) => {
     setMobileOpen(false);
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    if (isHome) {
+      const el = document.querySelector(anchor);
+      if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth' }); }
+    }
   };
+
+  const linkHref = (link) => isHome ? link.anchor : link.route;
+  const isActive = (link) => pathname === link.route;
 
   return (
     <>
-      <nav className={`navbar ${scrolled ? 'scrolled' : ''}`} role="navigation" aria-label="Main navigation">
+      {/* ─────────────── Main Navbar ─────────────── */}
+      <nav
+        className={`navbar${scrolled ? ' scrolled' : ''}`}
+        role="navigation"
+        aria-label="Main navigation"
+      >
         <div className="navbar-inner">
-          {/* Logo — falls back to typographic wordmark if image not present */}
-          <a href="#" className="navbar-logo" aria-label="IN NET CREATIONS — Home">
-            {/* TODO: Replace with real logo — see /assets/logo/in-net-creations-logo.png */}
-            <LogoWithFallback />
+
+          {/* Logo */}
+          <a href="/" className="navbar-logo" aria-label="IN NET CREATIONS — Home">
+            {!logoError ? (
+              <img
+                src="/assets/T_logo.png"
+                alt="IN NET CREATIONS logo"
+                width={180}
+                height={44}
+                className="navbar-logo-img"
+                onError={() => setLogoError(true)}
+              />
+            ) : (
+              <span className="navbar-logo-text">IN NET CREATIONS</span>
+            )}
           </a>
 
-          {/* Desktop Links */}
-          <div className="navbar-links">
+          {/* Desktop links */}
+          <div className="navbar-links" role="menubar">
             {navLinks.map((link) => (
               <a
-                key={link.href}
-                href={link.href}
-                className="navbar-link"
-                onClick={(e) => handleNavClick(e, link.href)}
+                key={link.label}
+                href={linkHref(link)}
+                className={`navbar-link${isActive(link) ? ' active' : ''}`}
+                role="menuitem"
+                onClick={(e) => handleAnchorClick(e, link.anchor)}
               >
                 {link.label}
               </a>
             ))}
           </div>
 
-          {/* Actions */}
+          {/* Action buttons */}
           <div className="navbar-actions">
             <button
               className="navbar-contrast-toggle"
@@ -78,14 +104,17 @@ export default function Navbar() {
             >
               {isDark ? '☀' : '◐'}
             </button>
-            <a href="#contact" className="navbar-cta" onClick={(e) => handleNavClick(e, '#contact')}>
+
+            <a href="/book-a-call" className="navbar-cta">
               Book a Call
             </a>
+
             <button
-              className={`navbar-mobile-toggle ${mobileOpen ? 'active' : ''}`}
+              className={`navbar-mobile-toggle${mobileOpen ? ' active' : ''}`}
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={mobileOpen}
+              aria-controls="mobile-menu"
             >
               <span />
               <span />
@@ -95,43 +124,60 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
-      <div className={`mobile-menu ${mobileOpen ? 'open' : ''}`} role="dialog" aria-label="Mobile navigation">
+      {/* ─────────────── Mobile Menu Overlay ─────────────── */}
+      <div
+        id="mobile-menu"
+        className={`mobile-menu${mobileOpen ? ' open' : ''}`}
+        role="dialog"
+        aria-label="Mobile navigation"
+        aria-modal="true"
+      >
+        {/* Logo in mobile menu */}
+        <a
+          href="/"
+          className="mobile-menu-logo"
+          onClick={() => setMobileOpen(false)}
+          aria-label="IN NET CREATIONS — Home"
+        >
+          {!logoError ? (
+            <img
+              src="/assets/T_logo.png"
+              alt="IN NET CREATIONS logo"
+              width={160}
+              height={40}
+              style={{ height: '40px', width: 'auto', objectFit: 'contain' }}
+            />
+          ) : (
+            <span style={{
+              color: 'var(--text-on-dark)',
+              fontWeight: 700,
+              letterSpacing: '0.15em',
+              fontSize: 'var(--text-sm)',
+            }}>
+              IN NET CREATIONS
+            </span>
+          )}
+        </a>
+
         {navLinks.map((link) => (
           <a
-            key={link.href}
-            href={link.href}
+            key={link.label}
+            href={linkHref(link)}
             className="mobile-menu-link"
-            onClick={(e) => handleNavClick(e, link.href)}
+            onClick={(e) => handleAnchorClick(e, link.anchor)}
           >
             {link.label}
           </a>
         ))}
-        <a href="#contact" className="mobile-menu-cta" onClick={(e) => handleNavClick(e, '#contact')}>
+
+        <a
+          href="/book-a-call"
+          className="mobile-menu-cta"
+          onClick={() => setMobileOpen(false)}
+        >
           Book a Call
         </a>
       </div>
     </>
-  );
-}
-
-/**
- * LogoWithFallback — Renders a placeholder logo next to the typographic wordmark.
- */
-function LogoWithFallback() {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-      <div 
-        style={{ 
-          width: '28px', 
-          height: '28px', 
-          backgroundColor: 'var(--placeholder-bg)',
-          border: '1px dashed var(--placeholder-border)',
-          borderRadius: '4px'
-        }} 
-        aria-hidden="true"
-      />
-      <span className="navbar-logo-text">IN NET CREATIONS</span>
-    </div>
   );
 }

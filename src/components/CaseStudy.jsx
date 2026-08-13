@@ -1,10 +1,21 @@
-import PlaceholderImage from './PlaceholderImage';
+import { featuredProject } from '../data/projects';
+import ProjectImage from './ProjectImage';
 
 /**
- * CaseStudy — Large, single-project spotlight block.
- * A distinctive layout element that builds credibility — image left, details right.
+ * CaseStudy — Large, single-project spotlight block for Sri Suriya Pipes.
+ * Image left, details right.
  */
 export default function CaseStudy() {
+  const project = featuredProject || {
+    name: 'Sri Suriya Pipes',
+    title: 'Digital Presence for a 20+ Year Manufacturer',
+    description:
+      'A full business website for a trusted Madurai PVC pipe manufacturer — product catalog, size charts, WhatsApp ordering, UPI payments, and a built-in chat assistant.',
+    tag: 'Web (Client Project)',
+    image: '/assets/projects/suriya-pipes.png',
+    link: 'https://www.suriyapipe.com',
+  };
+
   return (
     <section className="case-study" id="case-study">
       <div className="container">
@@ -13,26 +24,26 @@ export default function CaseStudy() {
 
         <div className="case-study-inner">
           <div className="case-study-image reveal">
-            {/* TODO: Replace with real project screenshot — see /assets/portfolio/ */}
-            <PlaceholderImage label="Project screenshot" dimensions="1600×1000" />
+            <ProjectImage
+              src={project.image}
+              alt={project.name}
+              title={project.name}
+              dimensions="1600×1000"
+            />
           </div>
 
           <div className="case-study-details reveal reveal-delay-2">
-            <span className="case-study-tag">Website Redesign</span>
-            {/* TODO: Replace with real project name and details */}
-            <h3 className="case-study-title">Revamping an established brand&apos;s digital presence</h3>
-            <p className="case-study-desc">
-              We redesigned their entire booking experience from the ground up — faster load times,
-              clearer navigation, mobile-first design. The result: a 45% increase in online bookings
-              within 60 days of launch.
-            </p>
+            <span className="case-study-tag">{project.tag}</span>
+            <h3 className="case-study-title">{project.title}</h3>
+            <p className="case-study-desc">{project.description}</p>
             <a
-              href="#"
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
               className="case-study-link"
               data-portfolio-link
             >
-              {/* TODO: Insert live project URL */}
-              View case study <span aria-hidden="true">→</span>
+              Visit Live Site ({project.name}) <span aria-hidden="true">→</span>
             </a>
           </div>
         </div>
@@ -40,3 +51,4 @@ export default function CaseStudy() {
     </section>
   );
 }
+

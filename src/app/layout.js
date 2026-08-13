@@ -31,6 +31,9 @@ export const metadata = {
     description:
       'Full-service digital studio in Madurai — web, app, SEO, video, photo, design, social & strategy.',
   },
+  icons: {
+    icon: '/assets/T_logo.png',
+  },
   robots: { index: true, follow: true },
 };
 
@@ -41,6 +44,7 @@ export default function RootLayout({ children }) {
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#111111" />
+        <link rel="icon" href="/assets/T_logo.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>

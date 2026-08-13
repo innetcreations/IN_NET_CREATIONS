@@ -18,6 +18,7 @@ import Newsletter from '../components/Newsletter';
 import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
 import BackToTop from '../components/BackToTop';
+import AIChatbot from '../components/AIChatbot';
 
 /**
  * Home — Main page composing all 17 sections in order.
@@ -98,6 +99,7 @@ export default function Home() {
       {/* Floating Elements */}
       <WhatsAppButton />
       <BackToTop />
+      <AIChatbot />
     </>
   );
 }

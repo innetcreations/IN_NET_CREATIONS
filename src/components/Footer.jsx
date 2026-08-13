@@ -4,11 +4,12 @@
  */
 export default function Footer() {
   const quickLinks = [
-    { label: 'Services', href: '#services' },
-    { label: 'Work', href: '#portfolio' },
-    { label: 'Process', href: '#process' },
-    { label: 'About', href: '#about' },
-    { label: 'Contact', href: '#contact' },
+    { label: 'Services', href: '/services' },
+    { label: 'Work',     href: '/work'     },
+    { label: 'Process',  href: '/process'  },
+    { label: 'About',    href: '/about'    },
+    { label: 'Contact',  href: '/contact'  },
+    { label: 'Book a Call', href: '/book-a-call' },
   ];
 
   const services = [
@@ -28,18 +29,14 @@ export default function Footer() {
         <div className="footer-grid">
           {/* Brand Column */}
           <div>
-            <span
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: 'var(--text-sm)',
-                fontWeight: 700,
-                letterSpacing: '0.2em',
-                textTransform: 'uppercase',
-                color: 'var(--text-on-dark)',
-              }}
-            >
-              IN NET CREATIONS
-            </span>
+            <a href="/" aria-label="IN NET CREATIONS — Home">
+              <img
+                src="/assets/T_logo.png"
+                alt="IN NET CREATIONS"
+                className="footer-logo-img"
+                style={{ height: '40px', width: 'auto', objectFit: 'contain', marginBottom: 'var(--space-md)', display: 'block' }}
+              />
+            </a>
             <p className="footer-brand-tagline">
               A full-service digital studio in Madurai — strategy, design, development, and growth,
               under one roof.
