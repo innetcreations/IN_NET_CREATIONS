@@ -8,6 +8,7 @@ import Marquee from '../components/Marquee';
 import Services from '../components/Services';
 import CaseStudy from '../components/CaseStudy';
 import Portfolio from '../components/Portfolio';
+import MotionGallery from '../components/MotionGallery';
 import Process from '../components/Process';
 import About from '../components/About';
 import FAQ from '../components/FAQ';
@@ -21,7 +22,7 @@ import BackToTop from '../components/BackToTop';
 import AIChatbot from '../components/AIChatbot';
 
 /**
- * Home — Main page composing all 17 sections in order.
+ * Home — Main page composing all sections in order.
  * Initializes scroll-reveal animations and custom cursor.
  */
 export default function Home() {
@@ -73,6 +74,9 @@ export default function Home() {
 
         {/* H. Portfolio Grid */}
         <Portfolio />
+
+        {/* H.5 Motion Gallery (Pinned Scroll-Driven Split-Screen Gallery) */}
+        <MotionGallery />
 
         {/* I. Process Section */}
         <Process />

@@ -1,5 +1,5 @@
 import PageWrapper from '../../components/PageWrapper';
-import ProjectImage from '../../components/ProjectImage';
+import WorkProjectCard from '../../components/WorkProjectCard';
 import { projectsData } from '../../data/projects';
 import CTABanner from '../../components/CTABanner';
 
@@ -48,64 +48,7 @@ export default function WorkPage() {
             {projectsData.map((project) => {
               const cat = categoryColors[project.category] || categoryColors.web;
               return (
-                <a
-                  key={project.id}
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: 'block',
-                    border: '1px solid var(--border-light)',
-                    borderRadius: 'var(--border-radius)',
-                    background: 'var(--bg-white)',
-                    overflow: 'hidden',
-                    transition: 'border-color 0.2s, transform 0.2s, box-shadow 0.2s',
-                    textDecoration: 'none',
-                  }}
-                  className="work-project-card"
-                >
-                  {/* Image */}
-                  <div style={{ position: 'relative', height: 220, background: '#0f0f0f', overflow: 'hidden' }}>
-                    <ProjectImage src={project.image} alt={project.name} />
-                    {/* Category badge */}
-                    <div style={{
-                      position: 'absolute', top: 12, left: 12,
-                      padding: '4px 10px', borderRadius: 20,
-                      background: cat.bg, color: cat.text,
-                      fontSize: 'var(--text-xs)', fontWeight: 600,
-                      border: `1px solid ${cat.text}44`,
-                    }}>
-                      {cat.label}
-                    </div>
-                    {/* Live badge */}
-                    <div style={{
-                      position: 'absolute', top: 12, right: 12,
-                      padding: '4px 10px', borderRadius: 20,
-                      background: 'rgba(0,0,0,0.7)', color: '#4caf50',
-                      fontSize: 'var(--text-xs)', fontWeight: 600,
-                      display: 'flex', alignItems: 'center', gap: 5,
-                    }}>
-                      <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#4caf50', display: 'inline-block' }} /> Live
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <div style={{ padding: 'var(--space-lg)' }}>
-                    <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 'var(--text-xl)', fontWeight: 500, color: 'var(--text-primary)', marginBottom: 'var(--space-xs)' }}>
-                      {project.name}
-                    </h2>
-                    <p style={{ fontSize: 'var(--text-sm)', color: 'var(--accent-gold)', fontWeight: 600, marginBottom: 'var(--space-sm)' }}>{project.title}</p>
-                    <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', lineHeight: 1.65 }}>{project.description}</p>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'var(--space-lg)' }}>
-                      <span style={{ fontSize: 'var(--text-sm)', color: 'var(--accent-gold)', fontWeight: 600 }}>
-                        View Live →
-                      </span>
-                      <span style={{ fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)' }}>
-                        {project.link.replace('https://', '').replace('http://', '').split('/')[0]}
-                      </span>
-                    </div>
-                  </div>
-                </a>
+                <WorkProjectCard key={project.id} project={project} cat={cat} />
               );
             })}
           </div>

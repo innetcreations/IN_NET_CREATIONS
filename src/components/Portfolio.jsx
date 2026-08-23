@@ -2,14 +2,17 @@
 
 import { useState } from 'react';
 import { projectsData } from '../data/projects';
-import ProjectImage from './ProjectImage';
+import ProjectCarousel from './ProjectCarousel';
+import ProjectLightbox from './ProjectLightbox';
 
 /**
- * Portfolio — Filterable project grid with 8 real project cards.
- * Filter tabs: All / Web / App / Branding
+ * Portfolio — Filterable project grid with real screenshots.
+ * Each card shows a swipeable carousel when a project has multiple images.
+ * Clicking a card image opens a full-resolution lightbox.
  */
 export default function Portfolio() {
   const [activeFilter, setActiveFilter] = useState('all');
+  const [lightbox, setLightbox] = useState(null); // { project, startIndex }
 
   const filters = [
     { key: 'all', label: 'All' },
@@ -18,9 +21,10 @@ export default function Portfolio() {
     { key: 'branding', label: 'Branding' },
   ];
 
-  const filteredProjects = activeFilter === 'all'
-    ? projectsData
-    : projectsData.filter((p) => p.category === activeFilter);
+  const filteredProjects =
+    activeFilter === 'all'
+      ? projectsData
+      : projectsData.filter((p) => p.category === activeFilter);
 
   return (
     <section className="portfolio" id="portfolio">
@@ -47,17 +51,20 @@ export default function Portfolio() {
               className={`portfolio-card reveal reveal-delay-${(i % 3) + 1}`}
               key={project.id || `${project.category}-${i}`}
             >
+              {/* Image area — carousel or single image */}
               <div className="portfolio-card-image">
-                <ProjectImage
-                  src={project.image}
-                  alt={project.name}
-                  title={project.name}
-                  dimensions="1600×1000"
+                <ProjectCarousel
+                  images={project.images || [project.image]}
+                  altPrefix={project.altPrefix || project.name + ' screenshot'}
+                  onImageClick={(idx) => setLightbox({ project, startIndex: idx })}
                 />
               </div>
+
               <div className="portfolio-card-body">
                 <span className="portfolio-card-tag">{project.tag}</span>
-                <h3 className="portfolio-card-title">{project.name} — {project.title}</h3>
+                <h3 className="portfolio-card-title">
+                  {project.name} — {project.title}
+                </h3>
                 <p className="portfolio-card-desc">{project.description}</p>
                 <a
                   href={project.link}
@@ -73,7 +80,17 @@ export default function Portfolio() {
           ))}
         </div>
       </div>
+
+      {/* Lightbox */}
+      {lightbox && (
+        <ProjectLightbox
+          isOpen={true}
+          images={lightbox.project.images || [lightbox.project.image]}
+          altPrefix={lightbox.project.altPrefix || lightbox.project.name + ' screenshot'}
+          startIndex={lightbox.startIndex}
+          onClose={() => setLightbox(null)}
+        />
+      )}
     </section>
   );
 }
-
