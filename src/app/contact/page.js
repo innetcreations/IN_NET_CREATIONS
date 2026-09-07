@@ -4,7 +4,7 @@ import Contact from '../../components/Contact';
 export const metadata = {
   title: 'Contact — IN NET CREATIONS | Get in Touch, Madurai',
   description:
-    'Contact IN NET CREATIONS. Address: MIG 2/2, TNHB Thoppur, Madurai – 625008. Phone: 95852 66673 / 63690 36210. Email: hello@innetcreations.in. WhatsApp available.',
+    'Contact IN NET CREATIONS. Address: MIG 2/2, TNHB Thoppur, Madurai – 625008. Phone: 95852 66671 / 63690 36210. Email: hello@innetcreations.in. WhatsApp available.',
 };
 
 const faqs = [
@@ -45,15 +45,15 @@ export default function ContactPage() {
       <section style={{ background: 'var(--bg-dark)', padding: '2rem 0', borderBottom: '1px solid rgba(160,125,63,0.2)' }}>
         <div className="container">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 'var(--space-lg)', textAlign: 'center' }}>
-            <a href="https://wa.me/919585266673" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, textDecoration: 'none' }}>
+            <a href="https://wa.me/916369036210" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, textDecoration: 'none' }}>
               <span style={{ fontSize: '1.5rem' }}>💬</span>
               <span style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--accent-gold)' }}>WhatsApp</span>
-              <span style={{ fontSize: 'var(--text-xs)', color: 'rgba(255,255,255,0.5)' }}>+91 95852 66673</span>
+              <span style={{ fontSize: 'var(--text-xs)', color: 'rgba(255,255,255,0.5)' }}>+91 63690 36210</span>
             </a>
-            <a href="tel:+919585266673" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, textDecoration: 'none' }}>
+            <a href="tel:+919585266671" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, textDecoration: 'none' }}>
               <span style={{ fontSize: '1.5rem' }}>📞</span>
               <span style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--accent-gold)' }}>Call Us</span>
-              <span style={{ fontSize: 'var(--text-xs)', color: 'rgba(255,255,255,0.5)' }}>95852 66673 / 63690 36210</span>
+              <span style={{ fontSize: 'var(--text-xs)', color: 'rgba(255,255,255,0.5)' }}>95852 66671 / 63690 36210</span>
             </a>
             <a href="mailto:hello@innetcreations.in" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, textDecoration: 'none' }}>
               <span style={{ fontSize: '1.5rem' }}>✉️</span>

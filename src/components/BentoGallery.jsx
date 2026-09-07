@@ -1,34 +1,34 @@
 'use client';
 
 import { useRef, useEffect } from 'react';
+import { projectsData } from '../data/projects';
+
+/**
+ * BentoGallery — "Selected Projects" section.
+ * Pulls real project data directly from the shared projects.js source
+ * (same data used in "Our Work" / Portfolio section) so both sections
+ * always stay in sync — no hardcoded duplicates.
+ *
+ * Displays exactly 4 specified featured projects:
+ *   1. Sri Suriya Pipes   (web)
+ *   2. Manohar's Portfolio (branding)
+ *   3. Interactive AI Chatbox (app)
+ *   4. KartZone           (web)
+ */
+
+const FEATURED_IDS = ['suriya-pipes', 'manohar-portfolio', 'ai-chatbox', 'kartzone'];
+
+const TAG_COLORS = {
+  web:      { bg: 'rgba(79, 195, 247, 0.12)', text: '#4fc3f7', border: 'rgba(79, 195, 247, 0.25)' },
+  app:      { bg: 'rgba(179, 157, 219, 0.12)', text: '#b39ddb', border: 'rgba(179, 157, 219, 0.25)' },
+  branding: { bg: 'rgba(129, 199, 132, 0.12)', text: '#81c784', border: 'rgba(129, 199, 132, 0.25)' },
+};
 
 export default function BentoGallery() {
-  const projects = [
-    {
-      title: 'E-Commerce Platform Redesign',
-      tag: 'WEBSITE',
-    },
-    {
-      title: 'Fitness Tracking Mobile App',
-      tag: 'APPLICATION',
-    },
-    {
-      title: 'Artisan Bakery Brand Identity',
-      tag: 'BRANDING',
-    },
-    {
-      title: 'Restaurant Social Media Campaign',
-      tag: 'SOCIAL MEDIA',
-    },
-    {
-      title: 'Real Estate Listing Portal',
-      tag: 'WEBSITE',
-    },
-    {
-      title: 'Health & Wellness App',
-      tag: 'APPLICATION',
-    },
-  ];
+  // Pull the 4 requested projects from the shared data source, preserving order
+  const projects = FEATURED_IDS
+    .map((id) => projectsData.find((p) => p.id === id))
+    .filter(Boolean);
 
   return (
     <section className="bento-section" id="showcase">
@@ -37,12 +37,12 @@ export default function BentoGallery() {
           <span className="section-label reveal">Featured Work</span>
           <h2 className="section-heading reveal">Selected Projects</h2>
         </div>
-        
+
         <div className="bento-grid reveal">
           {projects.map((project, index) => (
-            <BentoTile 
-              key={index} 
-              project={project} 
+            <BentoTile
+              key={project.id}
+              project={project}
               isFeatured={index === 0}
             />
           ))}
@@ -58,11 +58,13 @@ function BentoTile({ project, isFeatured }) {
   const contentRef = useRef(null);
   const imageWrapperRef = useRef(null);
 
+  const tagColor = TAG_COLORS[project.category] || TAG_COLORS.web;
+
   useEffect(() => {
     const tile = tileRef.current;
     if (!tile) return;
 
-    // Detect touch devices and disable JS hover
+    // Disable 3D tilt on touch devices
     const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
     if (isTouchDevice) return;
 
@@ -70,10 +72,10 @@ function BentoTile({ project, isFeatured }) {
       const rect = tile.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-      
+
       const centerX = x - rect.width / 2;
       const centerY = y - rect.height / 2;
-      
+
       const percentX = centerX / (rect.width / 2);
       const percentY = centerY / (rect.height / 2);
 
@@ -113,31 +115,49 @@ function BentoTile({ project, isFeatured }) {
   }, []);
 
   return (
-    <div 
+    <div
       className={`bento-tile ${isFeatured ? 'featured' : ''}`}
       ref={tileRef}
     >
       <div className="bento-tile-inner" ref={innerRef}>
+        {/* Real project screenshot */}
         <div className="bento-tile-image-wrapper" ref={imageWrapperRef}>
-          <div className="bento-placeholder">
-             <svg
-                className="bento-placeholder-icon"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                <circle cx="8.5" cy="8.5" r="1.5" />
-                <polyline points="21 15 16 10 5 21" />
-              </svg>
-          </div>
+          <img
+            src={project.image}
+            alt={`${project.name} — ${project.title}`}
+            className="bento-tile-image"
+            loading="lazy"
+          />
         </div>
-        <div className="bento-tile-overlay"></div>
+
+        <div className="bento-tile-overlay" />
+
         <div className="bento-tile-content" ref={contentRef}>
-          <h3 className="bento-tile-title">{project.title}</h3>
+          {/* Category badge */}
+          <span
+            className="bento-tile-tag"
+            style={{
+              background: tagColor.bg,
+              color: tagColor.text,
+              border: `1px solid ${tagColor.border}`,
+            }}
+          >
+            {project.tag}
+          </span>
+
+          <h3 className="bento-tile-title">{project.name}</h3>
+
+          <p className="bento-tile-desc">{project.title}</p>
+
+          <a
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bento-tile-link"
+            aria-label={`View ${project.name} live`}
+          >
+            View Project →
+          </a>
         </div>
       </div>
     </div>

@@ -1,0 +1,22 @@
+{
+  "sectionLabel": "About Us",
+  "sectionHeading": "A studio built on results, not promises",
+  "body": "IN NET CREATIONS is a Madurai-based digital studio run by Manohar and Harish Raj. We work directly with business owners — no account managers, no middlemen — to build websites, apps, and digital presence that actually move the needle.\n\nWe've worked with local businesses, national brands, and everything in between. What stays constant is our commitment to quality, transparency, and delivering work we're proud to put our names on.",
+  "stats": [
+    { "value": "50+", "label": "Projects Delivered" },
+    { "value": "3+", "label": "Years Experience" },
+    { "value": "100%", "label": "Ownership Transferred" }
+  ],
+  "teamMembers": [
+    {
+      "name": "Manohar",
+      "role": "Co-Founder & Lead Developer",
+      "image": "/assets/gallery/Manohar.jpg"
+    },
+    {
+      "name": "Harish Raj",
+      "role": "Co-Founder & Creative Director",
+      "image": ""
+    }
+  ]
+}

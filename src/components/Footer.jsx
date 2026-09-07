@@ -77,11 +77,10 @@ export default function Footer() {
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
               </svg>
-              <span>
-                <a href="tel:+919585266673" style={{ color: 'inherit' }}>95852 66673</a>
-                {' / '}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                <a href="tel:+919585266671" style={{ color: 'inherit' }}>95852 66671</a>
                 <a href="tel:+916369036210" style={{ color: 'inherit' }}>63690 36210</a>
-              </span>
+              </div>
             </div>
             <div className="footer-contact-item">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -95,29 +94,23 @@ export default function Footer() {
             <div style={{ marginTop: 'var(--space-lg)' }}>
               <p className="footer-col-title" style={{ marginBottom: 'var(--space-sm)' }}>Follow Our Work</p>
               <div className="footer-socials">
-                {/* TODO: Replace # with real social media URLs */}
-                <a href="#" className="footer-social-icon" aria-label="Instagram">
+                <a href="https://www.instagram.com/in_net_creations_?stkn=cWxlc3lkbWlpcm9j" className="footer-social-icon" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                     <rect x="2" y="2" width="20" height="20" rx="5" />
                     <circle cx="12" cy="12" r="5" />
                     <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
                   </svg>
                 </a>
-                <a href="https://wa.me/919585266673" className="footer-social-icon" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer">
+                <a href="https://wa.me/916369036210" className="footer-social-icon" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
                   </svg>
                 </a>
-                <a href="#" className="footer-social-icon" aria-label="LinkedIn">
+                <a href="https://www.linkedin.com/in/manohar-sudhakar-916a69353/" className="footer-social-icon" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
                     <rect x="2" y="9" width="4" height="12" />
                     <circle cx="4" cy="4" r="2" />
-                  </svg>
-                </a>
-                <a href="#" className="footer-social-icon" aria-label="Facebook">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
                   </svg>
                 </a>
               </div>

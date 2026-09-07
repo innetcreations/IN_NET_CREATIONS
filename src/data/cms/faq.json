@@ -1,0 +1,36 @@
+{
+  "sectionLabel": "Common Questions",
+  "sectionHeading": "Frequently Asked Questions",
+  "faqs": [
+    {
+      "id": "cost",
+      "question": "How much does a website cost?",
+      "answer": "Most of our websites fall between ₹15,000 and ₹75,000 depending on complexity. We always give you a fixed quote before starting — no hidden costs, no hourly billing surprises."
+    },
+    {
+      "id": "timeline",
+      "question": "How long does a project take?",
+      "answer": "A standard website takes 2–4 weeks from discovery call to launch. Apps take 4–8 weeks. We'll confirm a firm timeline during the strategy phase."
+    },
+    {
+      "id": "remote",
+      "question": "Do you work with clients outside Madurai?",
+      "answer": "Absolutely. We work with clients across India and internationally. Everything is managed through video calls, WhatsApp, and email — distance is never a blocker."
+    },
+    {
+      "id": "ownership",
+      "question": "Will I own the code and design files?",
+      "answer": "Yes. Once the final payment is made, you own 100% of the code, design files, and all assets we create for you. No lock-in, no licensing fees."
+    },
+    {
+      "id": "support",
+      "question": "What if I need changes after launch?",
+      "answer": "Every project includes 30 days of free post-launch support. After that, we offer affordable maintenance plans or one-off change requests."
+    },
+    {
+      "id": "hosting",
+      "question": "Do you do hosting and domain setup?",
+      "answer": "Yes. We can handle domain registration, hosting setup, SSL certificates, and deployment. We recommend and set up the most cost-effective options for your needs."
+    }
+  ]
+}

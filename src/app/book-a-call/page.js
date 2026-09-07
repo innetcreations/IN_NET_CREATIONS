@@ -1,25 +1,70 @@
 'use client';
 
 import { useState } from 'react';
+import emailjs from '@emailjs/browser';
 import PageWrapper from '../../components/PageWrapper';
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_RE = /^[+]?[\d\s\-().]{7,20}$/;
+function isValidContact(v) { return EMAIL_RE.test(v.trim()) || PHONE_RE.test(v.trim()); }
+
 
 export default function BookACallPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [isSending, setIsSending]   = useState(false);
+  const [sendError, setSendError]   = useState('');
+  const [formErrors, setFormErrors] = useState({});
   const [form, setForm] = useState({
     name: '',
     email: '',
     phone: '',
     service: '',
     budget: '',
-    date: '',
     message: '',
+    _honeypot: '',
   });
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+    if (formErrors[name]) setFormErrors((prev) => ({ ...prev, [name]: '' }));
+  };
 
-  const handleSubmit = (e) => {
+  function validate() {
+    const errors = {};
+    if (!form.name.trim()) errors.name = 'Please enter your name.';
+    if (!form.email.trim()) errors.email = 'Please enter your email or phone.';
+    else if (!isValidContact(form.email)) errors.email = 'Please enter a valid email or phone number.';
+    return errors;
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    setSendError('');
+    if (form._honeypot) { setSubmitted(true); return; }
+    const errors = validate();
+    if (Object.keys(errors).length > 0) { setFormErrors(errors); return; }
+    setIsSending(true);
+    const parts = ['[CALL BOOKING]'];
+    if (form.phone)   parts.push(`Phone/WhatsApp: ${form.phone}`);
+    if (form.service) parts.push(`Service: ${form.service}`);
+    if (form.budget)  parts.push(`Budget: ${form.budget}`);
+    if (form.message.trim()) parts.push(`\nProject Details:\n${form.message.trim()}`);
+    try {
+      await emailjs.send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+        { name: form.name.trim(), email: form.email.trim(), message: parts.join('\n') },
+        { publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY }
+      );
+      setSubmitted(true);
+      setForm({ name: '', email: '', phone: '', service: '', budget: '', message: '', _honeypot: '' });
+    } catch (err) {
+      console.error('EmailJS error:', err);
+      setSendError('Message not sent — please try WhatsApp instead.');
+    } finally {
+      setIsSending(false);
+    }
   };
 
   const offerings = [
@@ -81,80 +126,91 @@ export default function BookACallPage() {
               </h2>
 
               {!submitted ? (
-                <form className="contact-form" onSubmit={handleSubmit}>
+                <form className="contact-form" onSubmit={handleSubmit} noValidate>
+
+                  {/* Honeypot — invisible to real users */}
+                  <div style={{ display: 'none' }} aria-hidden="true">
+                    <input name="_honeypot" type="text" tabIndex={-1} autoComplete="off"
+                      value={form._honeypot} onChange={handleChange} />
+                  </div>
+
                   <div>
                     <label htmlFor="bac-name">Full Name *</label>
-                    <input id="bac-name" name="name" type="text" required placeholder="Your full name" value={form.name} onChange={handleChange} />
+                    <input id="bac-name" name="name" type="text" required
+                      placeholder="Your full name" value={form.name} onChange={handleChange}
+                      aria-invalid={!!formErrors.name} />
+                    {formErrors.name && <span className="contact-field-error" role="alert">{formErrors.name}</span>}
                   </div>
                   <div>
-                    <label htmlFor="bac-email">Email Address *</label>
-                    <input id="bac-email" name="email" type="email" required placeholder="you@example.com" value={form.email} onChange={handleChange} />
+                    <label htmlFor="bac-email">Email or Phone *</label>
+                    <input id="bac-email" name="email" type="text" required
+                      placeholder="you@example.com or phone number" value={form.email} onChange={handleChange}
+                      aria-invalid={!!formErrors.email} />
+                    {formErrors.email && <span className="contact-field-error" role="alert">{formErrors.email}</span>}
                   </div>
                   <div>
-                    <label htmlFor="bac-phone">Phone / WhatsApp</label>
-                    <input id="bac-phone" name="phone" type="tel" placeholder="+91 98765 43210" value={form.phone} onChange={handleChange} />
+                    <label htmlFor="bac-phone">Phone / WhatsApp (optional)</label>
+                    <input id="bac-phone" name="phone" type="tel"
+                      placeholder="+91 98765 43210" value={form.phone} onChange={handleChange} />
                   </div>
                   <div>
                     <label htmlFor="bac-service">Service Interested In *</label>
                     <select id="bac-service" name="service" required value={form.service} onChange={handleChange}>
                       <option value="">Select a service</option>
-                      <option value="website">Website Development</option>
-                      <option value="app">Application Development</option>
-                      <option value="seo">SEO &amp; Optimization</option>
-                      <option value="video">Video Editing</option>
-                      <option value="photo">Photo Editing</option>
-                      <option value="design">Poster &amp; Graphic Design</option>
-                      <option value="social">Social Media Management</option>
-                      <option value="brand">Brand Strategy</option>
-                      <option value="other">Other / Not sure yet</option>
+                      <option value="Website Development">Website Development</option>
+                      <option value="Application Development">Application Development</option>
+                      <option value="SEO & Optimization">SEO &amp; Optimization</option>
+                      <option value="Video Editing">Video Editing</option>
+                      <option value="Photo Editing">Photo Editing</option>
+                      <option value="Poster & Graphic Design">Poster &amp; Graphic Design</option>
+                      <option value="Social Media Management">Social Media Management</option>
+                      <option value="Brand Strategy">Brand Strategy</option>
+                      <option value="Other / Not sure yet">Other / Not sure yet</option>
                     </select>
                   </div>
                   <div>
                     <label htmlFor="bac-budget">Budget Range</label>
                     <select id="bac-budget" name="budget" value={form.budget} onChange={handleChange}>
                       <option value="">Select a range</option>
-                      <option value="under-15k">Under ₹15,000</option>
-                      <option value="15k-35k">₹15,000 – ₹35,000</option>
-                      <option value="35k-75k">₹35,000 – ₹75,000</option>
-                      <option value="75k-plus">₹75,000+</option>
-                      <option value="not-sure">Not sure yet</option>
+                      <option value="Under ₹15,000">Under ₹15,000</option>
+                      <option value="₹15,000 – ₹35,000">₹15,000 – ₹35,000</option>
+                      <option value="₹35,000 – ₹75,000">₹35,000 – ₹75,000</option>
+                      <option value="₹75,000+">₹75,000+</option>
+                      <option value="Not sure yet">Not sure yet</option>
                     </select>
                   </div>
                   <div>
                     <label htmlFor="bac-message">Tell Us About Your Project</label>
-                    <textarea
-                      id="bac-message"
-                      name="message"
-                      rows={5}
-                      placeholder="What are you looking to build? What's your timeline? Any other context that helps..."
-                      value={form.message}
-                      onChange={handleChange}
-                    />
+                    <textarea id="bac-message" name="message" rows={5}
+                      placeholder="What are you looking to build? Timeline? Any context..."
+                      value={form.message} onChange={handleChange} />
                   </div>
-                  <button type="submit" className="contact-form-submit">
-                    Request a Call →
+
+                  {sendError && (
+                    <div className="contact-send-error" role="alert">
+                      {sendError}{' '}
+                      <a href="https://wa.me/916369036210" target="_blank" rel="noopener noreferrer"
+                        className="contact-error-wa-link">Open WhatsApp →</a>
+                    </div>
+                  )}
+
+                  <button type="submit" className="contact-form-submit" disabled={isSending} aria-busy={isSending}>
+                    {isSending ? (<><span className="contact-form-spinner" aria-hidden="true" />Sending…</>) : 'Request a Call →'}
                   </button>
                   <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', marginTop: 'var(--space-xs)' }}>
-                    We'll reply within 24 hours to confirm a time. No spam, ever.
+                    We&apos;ll reply within 24 hours to confirm a time. No spam, ever.
                   </p>
                 </form>
               ) : (
                 <div className="contact-success" style={{ padding: 'var(--space-3xl)', textAlign: 'center' }}>
-                  <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-lg)' }}>✓</div>
-                  <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 'var(--text-xl)', marginBottom: 'var(--space-md)' }}>
-                    Request received!
-                  </h3>
-                  <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-base)' }}>
-                    Thanks {form.name ? form.name.split(' ')[0] : ''}! We'll be in touch within 24 hours to confirm your call time.
+                  <div className="contact-success-icon">✓</div>
+                  <h3>Request received!</h3>
+                  <p style={{ color: 'var(--text-secondary)' }}>
+                    Thanks {form.name ? form.name.split(' ')[0] : ''}! We&apos;ll be in touch within 24 hours to confirm your call time.
                     In the meantime, feel free to WhatsApp us directly.
                   </p>
-                  <a
-                    href="https://wa.me/919585266673"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-primary"
-                    style={{ display: 'inline-flex', marginTop: 'var(--space-xl)' }}
-                  >
+                  <a href="https://wa.me/916369036210" target="_blank" rel="noopener noreferrer"
+                    className="btn-primary" style={{ display: 'inline-flex', marginTop: 'var(--space-xl)' }}>
                     Open WhatsApp
                   </a>
                 </div>
@@ -192,11 +248,11 @@ export default function BookACallPage() {
                   Or reach us directly:
                 </p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
-                  <a href="https://wa.me/919585266673" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-gold)', fontWeight: 600, fontSize: 'var(--text-sm)' }}>
-                    💬 WhatsApp: +91 95852 66673
+                  <a href="https://wa.me/916369036210" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-gold)', fontWeight: 600, fontSize: 'var(--text-sm)' }}>
+                    💬 WhatsApp: +91 63690 36210
                   </a>
-                  <a href="tel:+919585266673" style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)' }}>
-                    📞 95852 66673 / 63690 36210
+                  <a href="tel:+919585266671" style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)' }}>
+                    📞 95852 66671 / 63690 36210
                   </a>
                   <a href="mailto:hello@innetcreations.in" style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)' }}>
                     ✉️ hello@innetcreations.in

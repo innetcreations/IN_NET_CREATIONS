@@ -7,12 +7,13 @@ export default function About() {
   const founders = [
     {
       name: 'Manohar',
-      role: 'Co-Founder & Lead Developer',
+      role: 'CEO & Founder',
       quote: '"Great digital work starts with genuinely understanding the people behind the business."',
+      image: '/assets/gallery/Manohar.jpg',
     },
     {
       name: 'S. Harish Raj',
-      role: 'Co-Founder & Creative Lead',
+      role: 'Co-Founder',
       quote: '"Every pixel should earn its place — design is strategy made visible."',
     },
   ];
@@ -33,12 +34,19 @@ export default function About() {
         <div className="about-team">
           {founders.map((founder, i) => (
             <div className={`about-card reveal reveal-delay-${i + 1}`} key={founder.name}>
-              {/* TODO: Replace with real founder photo — see /assets/team/ */}
-              <PlaceholderImage
-                label="Founder photo"
-                dimensions="400×400"
-                style={{ width: 160, height: 160, borderRadius: '50%', margin: '0 auto 1.5rem' }}
-              />
+              {founder.image ? (
+                <img
+                  src={founder.image}
+                  alt={`${founder.name} - ${founder.role}`}
+                  style={{ width: 160, height: 160, borderRadius: '50%', margin: '0 auto 1.5rem', objectFit: 'cover' }}
+                />
+              ) : (
+                <PlaceholderImage
+                  label="Founder photo"
+                  dimensions="400×400"
+                  style={{ width: 160, height: 160, borderRadius: '50%', margin: '0 auto 1.5rem' }}
+                />
+              )}
               <h3 className="about-card-name">{founder.name}</h3>
               <p className="about-card-role">{founder.role}</p>
               <p className="about-card-quote">{founder.quote}</p>

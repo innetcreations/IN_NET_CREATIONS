@@ -11,39 +11,15 @@ import ProjectLightbox from './ProjectLightbox';
  * Clicking a card image opens a full-resolution lightbox.
  */
 export default function Portfolio() {
-  const [activeFilter, setActiveFilter] = useState('all');
   const [lightbox, setLightbox] = useState(null); // { project, startIndex }
 
-  const filters = [
-    { key: 'all', label: 'All' },
-    { key: 'web', label: 'Web' },
-    { key: 'app', label: 'App' },
-    { key: 'branding', label: 'Branding' },
-  ];
-
-  const filteredProjects =
-    activeFilter === 'all'
-      ? projectsData
-      : projectsData.filter((p) => p.category === activeFilter);
+  const filteredProjects = projectsData;
 
   return (
     <section className="portfolio" id="portfolio">
       <div className="container">
         <span className="section-label reveal">Our Work</span>
         <h2 className="section-heading reveal">Work our clients are proud of</h2>
-
-        <div className="portfolio-filters reveal">
-          {filters.map((filter) => (
-            <button
-              key={filter.key}
-              className={`portfolio-filter-btn ${activeFilter === filter.key ? 'active' : ''}`}
-              onClick={() => setActiveFilter(filter.key)}
-              aria-pressed={activeFilter === filter.key}
-            >
-              {filter.label}
-            </button>
-          ))}
-        </div>
 
         <div className="portfolio-grid">
           {filteredProjects.map((project, i) => (

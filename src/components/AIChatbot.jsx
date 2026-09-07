@@ -34,7 +34,7 @@ export default function AIChatbot() {
       } else if (lowerText.includes('time') || lowerText.includes('long')) {
         aiResponse = "Most websites take 2–4 weeks to launch. Web and mobile apps usually take 4–8 weeks. We always provide a firm timeline before starting!";
       } else if (lowerText.includes('contact') || lowerText.includes('phone') || lowerText.includes('call')) {
-        aiResponse = "You can call or WhatsApp us at +91 95852 66673 or +91 63690 36210. You can also email hello@innetcreations.in. We're based in Madurai!";
+        aiResponse = "You can call or WhatsApp us at +91 95852 66671 or +91 63690 36210. You can also email hello@innetcreations.in. We're based in Madurai!";
       } else if (lowerText.includes('service') || lowerText.includes('do you do') || lowerText.includes('offer')) {
         aiResponse = "We offer Web Development, App Development, SEO, Branding, Video/Photo Editing, and Social Media Management. Which of those are you interested in?";
       }

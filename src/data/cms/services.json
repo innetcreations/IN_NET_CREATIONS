@@ -1,0 +1,54 @@
+{
+  "sectionLabel": "Our Services",
+  "sectionHeading": "Everything you need to grow online",
+  "services": [
+    {
+      "id": "website-development",
+      "icon": "globe",
+      "title": "Website Development",
+      "description": "Fast, conversion-focused websites built with modern tech. From landing pages to full e-commerce platforms — we build sites that perform.",
+      "features": ["Custom Design", "Mobile-First", "SEO-Ready", "Fast Loading", "CMS Integration"],
+      "priceFrom": "₹15,000"
+    },
+    {
+      "id": "application-development",
+      "icon": "smartphone",
+      "title": "Application Development",
+      "description": "Native and cross-platform apps for iOS and Android. User-first design, scalable architecture, and smooth experiences that keep users coming back.",
+      "features": ["iOS & Android", "Cross-Platform", "API Integration", "Push Notifications", "App Store Launch"],
+      "priceFrom": "₹35,000"
+    },
+    {
+      "id": "seo-optimization",
+      "icon": "trending-up",
+      "title": "SEO & Optimization",
+      "description": "Rank higher, get found faster. Data-driven SEO strategies tailored to your market — keyword research, on-page optimisation, and link building.",
+      "features": ["Keyword Research", "On-Page SEO", "Technical Audit", "Link Building", "Monthly Reports"],
+      "priceFrom": "₹8,000/mo"
+    },
+    {
+      "id": "video-editing",
+      "icon": "film",
+      "title": "Video Editing",
+      "description": "Polished, scroll-stopping video content — from short-form reels to full brand films and commercial ads. Every frame refined to perfection.",
+      "features": ["Reels & Shorts", "Brand Films", "Motion Graphics", "Color Grading", "Sound Design"],
+      "priceFrom": "₹3,000"
+    },
+    {
+      "id": "photo-editing",
+      "icon": "image",
+      "title": "Photo Editing & Design",
+      "description": "Professional retouching, color grading, and high-end compositing for product photos, portraits, and marketing materials.",
+      "features": ["Product Retouching", "Color Grading", "Background Removal", "Compositing", "Batch Editing"],
+      "priceFrom": "₹500/image"
+    },
+    {
+      "id": "social-media",
+      "icon": "share-2",
+      "title": "Social Media Management",
+      "description": "Consistent, on-brand content that builds community and drives engagement. Content calendars, posting, and performance reporting.",
+      "features": ["Content Calendar", "Graphic Design", "Copywriting", "Posting & Scheduling", "Monthly Reports"],
+      "priceFrom": "₹6,000/mo"
+    }
+  ]
+}

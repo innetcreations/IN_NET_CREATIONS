@@ -1,0 +1,26 @@
+{
+  "sectionLabel": "How We Work",
+  "sectionHeading": "From brief to launch in four clear steps",
+  "steps": [
+    {
+      "number": "01",
+      "title": "Discovery Call",
+      "description": "We start with a free 20-minute call to understand your goals, budget, and timeline. No jargon, no hard sell."
+    },
+    {
+      "number": "02",
+      "title": "Strategy & Proposal",
+      "description": "Within 48 hours we send a detailed scope of work, timeline, and fixed price. You know exactly what you're getting before we start."
+    },
+    {
+      "number": "03",
+      "title": "Design & Build",
+      "description": "Weekly progress updates, regular previews, and a direct line to your team. You're involved at every stage, not just the beginning and end."
+    },
+    {
+      "number": "04",
+      "title": "Launch & Support",
+      "description": "We handle deployment, testing, and go-live. Then 30 days of free support so you're never left stranded after launch."
+    }
+  ]
+}

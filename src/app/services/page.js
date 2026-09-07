@@ -119,7 +119,7 @@ const services = [
     tagline: 'Visuals that stop the scroll.',
     description: 'Eye-catching design that communicates your brand at a glance. We create everything from event posters and social media creatives to business cards and packaging — all consistent with your brand identity.',
     features: [
-      'Social media templates (Instagram, Facebook, LinkedIn)',
+      'Social media templates (Instagram, LinkedIn)',
       'Event and promotional posters (print & digital)',
       'Business stationery: cards, letterheads, envelopes',
       'Brand collateral: brochures, flyers, pitch decks',
@@ -139,7 +139,7 @@ const services = [
     tagline: 'Grow your audience. Own your feed.',
     description: 'Stop posting randomly and hoping for the best. We build a data-driven social media presence — consistent posting, strategic content that educates and converts, and community management that builds real relationships.',
     features: [
-      'Platform strategy: Instagram, Facebook, LinkedIn, YouTube',
+      'Platform strategy: Instagram, LinkedIn, YouTube',
       'Content calendar (30 days planned in advance)',
       '12–20 posts/month with design, copy, and scheduling',
       'Stories, Reels, and short-video content',

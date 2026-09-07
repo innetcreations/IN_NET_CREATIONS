@@ -11,7 +11,6 @@ import Portfolio from '../components/Portfolio';
 import MotionGallery from '../components/MotionGallery';
 import Process from '../components/Process';
 import About from '../components/About';
-import FAQ from '../components/FAQ';
 import BentoGallery from '../components/BentoGallery';
 import CTABanner from '../components/CTABanner';
 import Contact from '../components/Contact';
@@ -83,9 +82,6 @@ export default function Home() {
 
         {/* J. About / Team Section */}
         <About />
-
-        {/* M. FAQ Section */}
-        <FAQ />
 
         {/* N. CTA Banner */}
         <CTABanner />

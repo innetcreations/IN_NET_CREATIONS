@@ -88,7 +88,6 @@ export default function MotionGallery() {
   const videoRefs = useRef([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  const [videoErrors, setVideoErrors] = useState({});
 
   useEffect(() => {
     const checkMobile = () => {
@@ -108,7 +107,7 @@ export default function MotionGallery() {
       const panels = panelsRef.current;
       if (!panels || panels.length === 0) return;
 
-      // Set initial states for panels
+      // Set initial states: first panel visible, rest hidden
       panels.forEach((panel, i) => {
         if (!panel) return;
         if (i === 0) {
@@ -168,36 +167,23 @@ export default function MotionGallery() {
     return () => ctx.revert();
   }, [isMobile]);
 
-  // Handle video loading/unloading based on active index
+  // Bug C fix: manage play/pause and visibility based on activeIndex
+  // Bug B fix: video sources are eagerly rendered for ALL panels — we just play/pause them
   useEffect(() => {
     if (isMobile) return;
 
     videoRefs.current.forEach((videoEl, index) => {
       if (!videoEl) return;
 
-      const shouldBeLoaded = index === activeIndex || index === activeIndex + 1;
-
-      if (shouldBeLoaded) {
-        if (!videoEl.src || videoEl.src === window.location.href) {
-          videoEl.src = galleryItems[index].video;
-          videoEl.load();
-        }
+      if (index === activeIndex) {
         videoEl.play().catch(() => {
-          // Ignore autoplay restriction errors
+          // Ignore autoplay restriction errors silently
         });
       } else {
         videoEl.pause();
-        if (Math.abs(index - activeIndex) > 1 && videoEl.src) {
-          videoEl.removeAttribute('src');
-          videoEl.load();
-        }
       }
     });
   }, [activeIndex, isMobile]);
-
-  const handleVideoError = (index) => {
-    setVideoErrors((prev) => ({ ...prev, [index]: true }));
-  };
 
   return (
     <section
@@ -210,82 +196,36 @@ export default function MotionGallery() {
         <div className="motion-gallery-pinned" ref={pinnedRef}>
           <div className="motion-gallery-container">
             {galleryItems.map((item, idx) => {
-              const hasVideoError = videoErrors[idx];
-              const isLoadedOrActive = idx === activeIndex || idx === activeIndex + 1;
+              const isActive = idx === activeIndex;
 
               return (
                 <div
                   key={item.id}
-                  className={`motion-gallery-panel ${
-                    idx === activeIndex ? 'is-active' : ''
-                  }`}
+                  className={`motion-gallery-panel ${isActive ? 'is-active' : 'is-inactive'}`}
                   ref={(el) => (panelsRef.current[idx] = el)}
+                  aria-hidden={!isActive}
                 >
-                  {/* Split Screen 2-Column Grid */}
-                  <div className="motion-gallery-grid">
-                    {/* Left Column Container */}
-                    <div className="motion-gallery-col motion-gallery-col-left">
-                      <div className="motion-gallery-media-wrapper">
-                        {!hasVideoError ? (
-                          <video
-                            ref={(el) => {
-                              if (idx === activeIndex) videoRefs.current[idx] = el;
-                            }}
-                            className="motion-gallery-media motion-gallery-duotone"
-                            muted
-                            loop
-                            playsInline
-                            preload="none"
-                            poster={item.image}
-                            onError={() => handleVideoError(idx)}
-                            style={{ objectPosition: item.objectPosition }}
-                          >
-                            {isLoadedOrActive && (
-                              <source src={item.video} type="video/mp4" />
-                            )}
-                          </video>
-                        ) : (
-                          <img
-                            src={item.image}
-                            alt={item.title}
-                            className="motion-gallery-media motion-gallery-duotone"
-                            style={{ objectPosition: item.objectPosition }}
-                          />
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Right Column Container */}
-                    <div className="motion-gallery-col motion-gallery-col-right">
-                      <div className="motion-gallery-media-wrapper">
-                        {!hasVideoError ? (
-                          <video
-                            className="motion-gallery-media motion-gallery-duotone"
-                            muted
-                            loop
-                            playsInline
-                            preload="none"
-                            poster={item.image}
-                            onError={() => handleVideoError(idx)}
-                            style={{ objectPosition: item.objectPosition }}
-                          >
-                            {isLoadedOrActive && (
-                              <source src={item.video} type="video/mp4" />
-                            )}
-                          </video>
-                        ) : (
-                          <img
-                            src={item.image}
-                            alt={item.title}
-                            className="motion-gallery-media motion-gallery-duotone"
-                            style={{ objectPosition: item.objectPosition }}
-                          />
-                        )}
-                      </div>
-                    </div>
+                  {/* BUG A FIX: Single media element per panel (removed right-column duplicate).
+                      The panel covers the full viewport width; one video fills the entire background.
+                      Center content overlays on top via absolute positioning. */}
+                  <div className="motion-gallery-full-media">
+                    {/* Bug B fix: <source> always rendered for ALL panels — preload="none" prevents
+                        network waste. Only the active panel's video is playing (managed above). */}
+                    <video
+                      ref={(el) => (videoRefs.current[idx] = el)}
+                      className="motion-gallery-media motion-gallery-duotone"
+                      muted
+                      loop
+                      playsInline
+                      preload="none"
+                      poster={item.image}
+                      style={{ objectPosition: item.objectPosition }}
+                    >
+                      <source src={item.video} type="video/mp4" />
+                    </video>
                   </div>
 
-                  {/* Overlaid Center Content across the seam */}
+                  {/* Overlaid Center Content */}
                   <div className="motion-gallery-overlay">
                     <div className="motion-gallery-content">
                       <div className="motion-gallery-label">
@@ -302,6 +242,7 @@ export default function MotionGallery() {
                         href={item.link}
                         className="motion-gallery-link"
                         data-gallery-link
+                        tabIndex={isActive ? 0 : -1}
                       >
                         VIEW FULL PROJECT <span aria-hidden="true">→</span>
                       </a>
@@ -317,9 +258,7 @@ export default function MotionGallery() {
                 {galleryItems.map((item, idx) => (
                   <button
                     key={item.id}
-                    className={`motion-gallery-tick ${
-                      idx === activeIndex ? 'active' : ''
-                    }`}
+                    className={`motion-gallery-tick ${idx === activeIndex ? 'active' : ''}`}
                     onClick={() => {
                       if (wrapperRef.current && typeof window !== 'undefined') {
                         const trigger = ScrollTrigger.getById('motion-gallery-st');
@@ -346,9 +285,7 @@ export default function MotionGallery() {
                 <div
                   className="motion-gallery-progress-fill"
                   style={{
-                    width: `${
-                      ((activeIndex + 1) / galleryItems.length) * 100
-                    }%`,
+                    width: `${((activeIndex + 1) / galleryItems.length) * 100}%`,
                   }}
                 />
               </div>

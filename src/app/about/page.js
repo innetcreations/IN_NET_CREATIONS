@@ -178,14 +178,14 @@ export default function AboutPage() {
               <h2 className="section-heading">Based in Madurai, Tamil Nadu</h2>
               <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: 'var(--space-xl)' }}>
                 MIG 2/2, TNHB Thoppur, Madurai – 625008, Tamil Nadu, India<br/>
-                <a href="tel:+919585266673" style={{ color: 'var(--accent-gold)' }}>+91 95852 66673</a>
+                <a href="tel:+919585266671" style={{ color: 'var(--accent-gold)' }}>+91 95852 66671</a>
                 {' / '}
                 <a href="tel:+916369036210" style={{ color: 'var(--accent-gold)' }}>+91 63690 36210</a><br/>
                 <a href="mailto:hello@innetcreations.in" style={{ color: 'var(--accent-gold)' }}>hello@innetcreations.in</a>
               </p>
               <div style={{ display: 'flex', gap: 'var(--space-md)', justifyContent: 'center', flexWrap: 'wrap' }}>
                 <a href="/book-a-call" className="btn-primary">Book a Free Call →</a>
-                <a href="https://wa.me/919585266673" target="_blank" rel="noopener noreferrer" className="btn-secondary">WhatsApp Us</a>
+                <a href="https://wa.me/916369036210" target="_blank" rel="noopener noreferrer" className="btn-secondary">WhatsApp Us</a>
               </div>
             </div>
           </div>
