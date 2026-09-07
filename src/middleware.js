@@ -1,17 +1,29 @@
-export { default } from 'next-auth/middleware';
+import { withAuth } from 'next-auth/middleware';
+import { NextResponse } from 'next/server';
 
 /**
  * Next.js Middleware — Route Protection for Admin CMS
  *
- * Any request to /admin/* or /api/admin/* (except /admin/login)
- * is intercepted here. If the user doesn't have a valid NextAuth session,
- * they're redirected to /admin/login.
- *
- * The API routes (/api/admin/*) return 401 JSON instead of redirecting.
+ * Protects /admin/* (except /admin/login) and /api/admin/*.
+ * Unauthenticated users are redirected to /admin/login.
  */
+export default withAuth(
+  function middleware(req) {
+    return NextResponse.next();
+  },
+  {
+    callbacks: {
+      authorized: ({ token }) => !!token,
+    },
+    pages: {
+      signIn: '/admin/login',
+    },
+  }
+);
+
 export const config = {
   matcher: [
-    '/admin/:path*',
+    '/admin/((?!login).*)',
     '/api/admin/:path*',
   ],
 };
