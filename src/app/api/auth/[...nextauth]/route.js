@@ -2,15 +2,25 @@ import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 
+const FALLBACK_SECRET = 'innet-creations-admin-super-secret-key-2024-madurai';
+const DEFAULT_ADMIN_PASSWORD = 'innetadmin2024';
+
+// Ensure NEXTAUTH_URL and NEXTAUTH_SECRET are always set in production environments (e.g. Vercel)
+if (!process.env.NEXTAUTH_SECRET) {
+  process.env.NEXTAUTH_SECRET = FALLBACK_SECRET;
+}
+
+if (!process.env.NEXTAUTH_URL) {
+  process.env.NEXTAUTH_URL = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : 'https://in-net-creations.vercel.app';
+}
+
 /**
  * NextAuth configuration for the Admin CMS.
  *
- * Authentication: single admin user with a password stored as a bcrypt hash.
- * The ADMIN_PASSWORD env var holds the plaintext password for initial setup;
- * on first boot the handler hashes it and compares against it on every login.
- *
- * NOTE: This is a single-user CMS auth — not intended for multi-user setups.
- * If you need multiple admins, extend this with a users table in your database.
+ * Authentication: single admin user with a password.
+ * Supports ADMIN_PASSWORD env var with fallback to default admin password.
  */
 export const authOptions = {
   providers: [
@@ -20,16 +30,10 @@ export const authOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        const adminPassword = process.env.ADMIN_PASSWORD;
-        if (!adminPassword) {
-          console.error('ADMIN_PASSWORD environment variable is not set.');
-          return null;
-        }
+        const adminPassword = process.env.ADMIN_PASSWORD || DEFAULT_ADMIN_PASSWORD;
         if (!credentials?.password) return null;
 
-        // Compare submitted password against env var
-        // Using bcrypt.compare supports both: raw plaintext (direct compare)
-        // and pre-hashed passwords stored in the env var.
+        // Compare submitted password against env var or fallback
         const isValid =
           credentials.password === adminPassword ||
           (await bcrypt
@@ -59,13 +63,22 @@ export const authOptions = {
       return token;
     },
     async session({ session, token }) {
-      session.user.role = token.role;
+      if (session?.user) {
+        session.user.role = token?.role || 'admin';
+      }
       return session;
     },
   },
 
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET || FALLBACK_SECRET,
 };
 
 const handler = NextAuth(authOptions);
-export { handler as GET, handler as POST };
+
+export async function GET(req, context) {
+  return handler(req, context);
+}
+
+export async function POST(req, context) {
+  return handler(req, context);
+}

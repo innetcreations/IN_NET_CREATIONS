@@ -1,5 +1,18 @@
 import './globals.css';
 import { Analytics } from '@vercel/analytics/react';
+import { Inter, Playfair_Display } from 'next/font/google';
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap',
+});
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-serif',
+  display: 'swap',
+});
 
 const SITE_URL = 'https://in-net-creations.vercel.app';
 
@@ -114,7 +127,7 @@ const localBusinessSchema = {
   image: `${SITE_URL}/og-image.jpg`,
   url: SITE_URL,
   telephone: '+919585266671',
-  email: 'innetcreations@gmail.com',
+  email: 'hello@innetcreations.in',
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'MIG 2/2, TNHB Thoppur',
@@ -147,8 +160,6 @@ export default function RootLayout({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#111111" />
         <link rel="icon" href="/assets/T_logo.png" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
 
         {/* Organization JSON-LD */}
         <script
@@ -161,7 +172,7 @@ export default function RootLayout({ children }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
         />
       </head>
-      <body>
+      <body className={`${inter.variable} ${playfair.variable}`}>
         {children}
         {/* Vercel Analytics — tracks page views automatically */}
         <Analytics />

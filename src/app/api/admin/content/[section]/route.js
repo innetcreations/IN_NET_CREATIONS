@@ -30,7 +30,8 @@ export async function GET(request, { params }) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { section } = params;
+  const resolvedParams = await params;
+  const section = resolvedParams?.section;
   if (!isValidSection(section)) {
     return NextResponse.json({ error: 'Invalid section' }, { status: 400 });
   }
@@ -55,7 +56,8 @@ export async function PUT(request, { params }) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { section } = params;
+  const resolvedParams = await params;
+  const section = resolvedParams?.section;
   if (!isValidSection(section)) {
     return NextResponse.json({ error: 'Invalid section' }, { status: 400 });
   }

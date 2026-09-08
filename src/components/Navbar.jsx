@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 
 /**
  * Navbar — Sticky navigation with scroll-shrink, mobile overlay, theme toggle.
@@ -64,7 +65,7 @@ export default function Navbar() {
         <div className="navbar-inner">
 
           {/* Logo */}
-          <a href="/" className="navbar-logo" aria-label="IN NET CREATIONS — Home">
+          <Link href="/" className="navbar-logo" aria-label="IN NET CREATIONS — Home">
             {!logoError ? (
               <img
                 src="/assets/T_logo.png"
@@ -77,7 +78,7 @@ export default function Navbar() {
             ) : (
               <span className="navbar-logo-text">IN NET CREATIONS</span>
             )}
-          </a>
+          </Link>
 
           {/* Desktop links */}
           <div className="navbar-links" role="menubar">
@@ -105,9 +106,9 @@ export default function Navbar() {
               {isDark ? '☀' : '◐'}
             </button>
 
-            <a href="/book-a-call" className="navbar-cta">
+            <Link href="/book-a-call" className="navbar-cta">
               Book a Call
-            </a>
+            </Link>
 
             <button
               className={`navbar-mobile-toggle${mobileOpen ? ' active' : ''}`}
@@ -133,7 +134,7 @@ export default function Navbar() {
         aria-modal="true"
       >
         {/* Logo in mobile menu */}
-        <a
+        <Link
           href="/"
           className="mobile-menu-logo"
           onClick={() => setMobileOpen(false)}
@@ -157,7 +158,7 @@ export default function Navbar() {
               IN NET CREATIONS
             </span>
           )}
-        </a>
+        </Link>
 
         {navLinks.map((link) => (
           <a
@@ -170,13 +171,13 @@ export default function Navbar() {
           </a>
         ))}
 
-        <a
+        <Link
           href="/book-a-call"
           className="mobile-menu-cta"
           onClick={() => setMobileOpen(false)}
         >
           Book a Call
-        </a>
+        </Link>
       </div>
     </>
   );

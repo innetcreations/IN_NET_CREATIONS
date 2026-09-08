@@ -3,6 +3,7 @@
 import { signIn, useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function AdminLoginPage() {
   const { data: session, status } = useSession();
@@ -21,22 +22,25 @@ export default function AdminLoginPage() {
     setError('');
     setLoading(true);
 
-    const result = await signIn('credentials', {
-      password,
-      redirect: false,
-    });
+    try {
+      const result = await signIn('credentials', {
+        password,
+        redirect: false,
+      });
 
-    setLoading(false);
+      setLoading(false);
 
-    if (result?.error) {
-      setError('Incorrect password. Please try again.');
-      setPassword('');
-    } else {
-      router.replace('/admin');
+      if (result?.error) {
+        setError('Incorrect password. Please try again.');
+        setPassword('');
+      } else {
+        router.replace('/admin');
+      }
+    } catch (err) {
+      setLoading(false);
+      setError('Unable to sign in. Please check your connection and try again.');
     }
   };
-
-  if (status === 'loading') return null;
 
   return (
     <div className="admin-login-page">
@@ -79,7 +83,7 @@ export default function AdminLoginPage() {
         </form>
 
         <p className="admin-login-footer">
-          <a href="/" className="admin-login-back">← Back to website</a>
+          <Link href="/" className="admin-login-back">← Back to website</Link>
         </p>
       </div>
     </div>

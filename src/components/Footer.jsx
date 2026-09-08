@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 /**
  * Footer — 4-column layout with logo, quick links, services list,
  * contact details, social icons, and copyright.
@@ -29,14 +31,14 @@ export default function Footer() {
         <div className="footer-grid">
           {/* Brand Column */}
           <div>
-            <a href="/" aria-label="IN NET CREATIONS — Home">
+            <Link href="/" aria-label="IN NET CREATIONS — Home">
               <img
                 src="/assets/T_logo.png"
                 alt="IN NET CREATIONS"
                 className="footer-logo-img"
                 style={{ height: '40px', width: 'auto', objectFit: 'contain', marginBottom: 'var(--space-md)', display: 'block' }}
               />
-            </a>
+            </Link>
             <p className="footer-brand-tagline">
               A full-service digital studio in Madurai — strategy, design, development, and growth,
               under one roof.
@@ -47,9 +49,9 @@ export default function Footer() {
           <div>
             <h3 className="footer-col-title">Quick Links</h3>
             {quickLinks.map((link) => (
-              <a key={link.href} href={link.href} className="footer-link">
+              <Link key={link.href} href={link.href} className="footer-link">
                 {link.label}
-              </a>
+              </Link>
             ))}
           </div>
 

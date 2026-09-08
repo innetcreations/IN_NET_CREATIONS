@@ -27,7 +27,7 @@ export default function HeroEditor() {
           <input className="admin-input" value={data.badge || ''}
             onChange={(e) => setData({ badge: e.target.value })}
             placeholder="Digital Studio, Madurai" />
-          <span className="admin-hint">Small label above the heading (e.g. "Digital Studio, Madurai")</span>
+          <span className="admin-hint">Small label above the heading (e.g. &quot;Digital Studio, Madurai&quot;)</span>
         </div>
 
         <div className="admin-field-group">

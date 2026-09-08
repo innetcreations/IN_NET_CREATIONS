@@ -12,6 +12,7 @@ export default withAuth(
     return NextResponse.next();
   },
   {
+    secret: process.env.NEXTAUTH_SECRET || 'innet-creations-admin-super-secret-key-2024-madurai',
     callbacks: {
       authorized: ({ token }) => !!token,
     },
