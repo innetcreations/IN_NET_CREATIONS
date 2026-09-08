@@ -2,38 +2,47 @@
 
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter, usePathname } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 /**
  * AdminShell — Shared layout for all admin pages except login.
  * Provides sidebar navigation and logout button.
- * Use this as a wrapper inside each admin page (not as a Next.js layout file)
- * to keep the login page layout separate.
+ * Shows a banner when GitHub storage is not configured (saves will fail on Vercel).
  */
 
 const NAV_ITEMS = [
-  { href: '/admin', label: 'Dashboard', icon: '⊞' },
-  { href: '/admin/hero', label: 'Hero Section', icon: '🏠' },
-  { href: '/admin/services', label: 'Services', icon: '⚙' },
-  { href: '/admin/projects', label: 'Projects', icon: '🗂' },
-  { href: '/admin/process', label: 'Process Steps', icon: '📋' },
-  { href: '/admin/about', label: 'About / Team', icon: '👥' },
-  { href: '/admin/faq', label: 'FAQ', icon: '❓' },
-  { href: '/admin/contact', label: 'Contact Info', icon: '📬' },
-  { href: '/admin/seo', label: 'SEO Settings', icon: '🔍' },
+  { href: '/admin',          label: 'Dashboard',    icon: '⊞' },
+  { href: '/admin/hero',     label: 'Hero Section',  icon: '🏠' },
+  { href: '/admin/services', label: 'Services',      icon: '⚙' },
+  { href: '/admin/projects', label: 'Projects',      icon: '🗂' },
+  { href: '/admin/process',  label: 'Process Steps', icon: '📋' },
+  { href: '/admin/about',    label: 'About / Team',  icon: '👥' },
+  { href: '/admin/faq',      label: 'FAQ',           icon: '❓' },
+  { href: '/admin/contact',  label: 'Contact Info',  icon: '📬' },
+  { href: '/admin/seo',      label: 'SEO Settings',  icon: '🔍' },
 ];
 
 export function AdminShell({ children, title }) {
   const { data: session, status } = useSession();
-  const router = useRouter();
+  const router   = useRouter();
   const pathname = usePathname();
+  const [storageReady, setStorageReady] = useState(null); // null = checking
 
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.replace('/admin/login');
     }
   }, [status, router]);
+
+  // Check CMS storage status once authenticated
+  useEffect(() => {
+    if (status !== 'authenticated') return;
+    fetch('/api/admin/cms-status')
+      .then((r) => r.ok ? r.json() : null)
+      .then((json) => setStorageReady(json?.storageReady ?? false))
+      .catch(() => setStorageReady(false));
+  }, [status]);
 
   if (status === 'loading' || !session) {
     return (
@@ -91,6 +100,26 @@ export function AdminShell({ children, title }) {
           <h1 className="admin-page-title">{title}</h1>
           <span className="admin-header-user">👤 Admin</span>
         </header>
+
+        {/* GitHub storage setup warning */}
+        {storageReady === false && (
+          <div className="admin-setup-banner">
+            <span className="admin-setup-banner-icon">⚠️</span>
+            <div className="admin-setup-banner-text">
+              <strong>Storage not configured</strong> — Saves will fail on Vercel until you add{' '}
+              <code>GITHUB_TOKEN</code> and <code>GITHUB_REPO</code> to your Vercel environment variables.{' '}
+              <a
+                href="https://github.com/settings/tokens/new"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="admin-setup-banner-link"
+              >
+                Create GitHub token →
+              </a>
+            </div>
+          </div>
+        )}
+
         <div className="admin-content">
           {children}
         </div>

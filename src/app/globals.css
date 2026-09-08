@@ -3915,4 +3915,52 @@ input, select, textarea {
   to { transform: rotate(360deg); }
 }
 
+/* ── Setup Banner (GitHub storage warning) ───────────────── */
+.admin-setup-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0 2rem 0 2rem;
+  padding: 12px 16px;
+  background: rgba(251, 146, 60, 0.10);
+  border: 1px solid rgba(251, 146, 60, 0.35);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: #333;
+}
+
+.admin-setup-banner-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.admin-setup-banner-text {
+  flex: 1;
+}
+
+.admin-setup-banner-text strong {
+  font-weight: 700;
+  color: #b45309;
+}
+
+.admin-setup-banner-text code {
+  background: rgba(0,0,0,0.07);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.82em;
+}
+
+.admin-setup-banner-link {
+  color: #A07D3F;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.admin-setup-banner-link:hover {
+  color: #856832;
+}
 
